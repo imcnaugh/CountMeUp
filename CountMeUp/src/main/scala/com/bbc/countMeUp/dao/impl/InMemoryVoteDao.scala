@@ -26,7 +26,12 @@ trait InMemoryVoteDao extends VoteDao{
       votes.get(id)
     }
 
-    override def update(model: Vote): Unit = ???
+    override def update(model: Vote): Vote = {
+      votes.put(model.id, model) match {
+        case None => throw new Exception
+        case v: Some[Vote] => v.get
+      }
+    }
 
     override def delete(id: UUID): Unit = ???
   }

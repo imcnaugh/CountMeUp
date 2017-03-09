@@ -51,4 +51,26 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
     }
   }
 
+  describe("upadate vote test"){
+    it("updating a vote should reflect the updates when read"){
+      val voteId = UUID.randomUUID()
+      val initialVote = testVote.copy(id = voteId)
+      target.voteDao.create(initialVote)
+      target.voteDao.read(voteId).get.electionId should equal(testVote.electionId)
+
+      val newElectionId = UUID.randomUUID()
+      val updatedVote = initialVote.copy(electionId = newElectionId)
+      target.voteDao.update(updatedVote)
+
+      target.voteDao.read(voteId).get should equal(updatedVote)
+
+    }
+    
+    it("updating a vote that does not exist should throw an exception"){
+      intercept[Exception]{
+        target.voteDao.update(testVote.copy(id = UUID.randomUUID()))
+      }
+    }
+  }
+
 }
