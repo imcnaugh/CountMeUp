@@ -22,7 +22,9 @@ trait InMemoryVoteDao extends VoteDao{
       }
     }
 
-    override def read(id: UUID): Option[Vote] = ???
+    override def read(id: UUID): Option[Vote] = {
+      votes.get(id)
+    }
 
     override def update(model: Vote): Unit = ???
 
