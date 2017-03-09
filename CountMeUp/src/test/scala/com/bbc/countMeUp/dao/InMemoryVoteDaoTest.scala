@@ -88,4 +88,20 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
     }
   }
 
+  describe("get votes for election tests"){
+    it("should return all votes assigned to the given election"){
+      val electionId = UUID.randomUUID()
+      val voteIds = for(x <- 1 to 10) yield{
+        target.voteDao.create(testVote.copy(
+          id = UUID.randomUUID(),
+          electionId = electionId
+        ))
+      }
+
+      val readVotes = target.voteDao.getVotesForElection(electionId)
+      readVotes.size should equal(voteIds.size)
+      readVotes.map(v => v.id) should equal(voteIds)
+    }
+  }
+
 }
