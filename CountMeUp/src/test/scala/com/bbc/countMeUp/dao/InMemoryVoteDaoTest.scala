@@ -24,7 +24,8 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
 
   describe("create vote test"){
     it("creating a vote should not throw an exception when ID is unique"){
-      target.voteDao.create(testVote.copy(id = UUID.randomUUID())) should equal(None)
+      val newId = UUID.randomUUID()
+      target.voteDao.create(testVote.copy(id = newId)) should equal(newId)
     }
 
     it("creating a vote with a non unique id should throw an exception"){
