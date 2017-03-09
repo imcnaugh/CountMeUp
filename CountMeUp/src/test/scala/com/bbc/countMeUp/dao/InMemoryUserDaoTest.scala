@@ -68,7 +68,7 @@ class InMemoryUserDaoTest extends FunSpec with Matchers {
     }
   }
 
-  describe("delete user test"){
+  describe("delete user test") {
     it("should be able to delete a user that exists") {
       //hard deletes for right now
       val userId = UUID.randomUUID()
@@ -81,4 +81,5 @@ class InMemoryUserDaoTest extends FunSpec with Matchers {
 
       target.userDao.read(userId) should equal(None)
     }
+  }
 }
