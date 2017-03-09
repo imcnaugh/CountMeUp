@@ -6,9 +6,9 @@ import com.bbc.countMeUp.dao.impl.InMemoryVoteDao
 import com.bbc.countMeUp.model.Vote
 import org.scalatest.{FunSpec, Matchers}
 
-class InMemoryVoteDaoTest extends FunSpec with Matchers{
+class InMemoryVoteDaoTest extends FunSpec with Matchers {
 
-  private class InMemoryVoteDaoTest{
+  private class InMemoryVoteDaoTest {
     this: InMemoryVoteDao =>
   }
 
@@ -22,27 +22,27 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
     candidateId = UUID.randomUUID(),
     electionId = UUID.randomUUID())
 
-  describe("create vote test"){
-    it("creating a vote should not throw an exception when ID is unique"){
+  describe("create vote test") {
+    it("creating a vote should not throw an exception when ID is unique") {
       val newId = UUID.randomUUID()
       target.voteDao.create(testVote.copy(id = newId)) should equal(newId)
     }
 
-    it("creating a vote with a non unique id should throw an exception"){
+    it("creating a vote with a non unique id should throw an exception") {
       //add the vote to the repository, then add the same vote again, this should throw an exception
       target.voteDao.create(testVote)
-      intercept[Exception]{
+      intercept[Exception] {
         target.voteDao.create(testVote)
       }
     }
   }
 
-  describe("read vote test"){
-    it("attempting to read a vote that does not exist should return None"){
-      target.voteDao.read(UUID.randomUUID()) should equal (None)
+  describe("read vote test") {
+    it("attempting to read a vote that does not exist should return None") {
+      target.voteDao.read(UUID.randomUUID()) should equal(None)
     }
 
-    it("reading a vote from an ID should return that vote"){
+    it("reading a vote from an ID should return that vote") {
       val voteId = UUID.randomUUID()
       val readVote = testVote.copy(id = voteId)
       target.voteDao.create(readVote)
@@ -51,8 +51,8 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
     }
   }
 
-  describe("update vote test"){
-    it("updating a vote should reflect the updates when read"){
+  describe("update vote test") {
+    it("updating a vote should reflect the updates when read") {
       val voteId = UUID.randomUUID()
       val initialVote = testVote.copy(id = voteId)
       target.voteDao.create(initialVote)
@@ -66,14 +66,14 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
 
     }
 
-    it("updating a vote that does not exist should throw an exception"){
-      intercept[Exception]{
+    it("updating a vote that does not exist should throw an exception") {
+      intercept[Exception] {
         target.voteDao.update(testVote.copy(id = UUID.randomUUID()))
       }
     }
   }
 
-  describe("delete vote test"){
+  describe("delete vote test") {
     it("should be able to delete a vote that exists") {
       //hard deletes for right now
       val voteId = UUID.randomUUID()
@@ -88,10 +88,10 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
     }
   }
 
-  describe("get votes for election tests"){
-    it("should return all votes assigned to the given election"){
+  describe("get votes for election tests") {
+    it("should return all votes assigned to the given election") {
       val electionId = UUID.randomUUID()
-      val voteIds = for(x <- 1 to 10) yield{
+      val voteIds = for (x <- 1 to 10) yield {
         target.voteDao.create(testVote.copy(
           id = UUID.randomUUID(),
           electionId = electionId
@@ -104,15 +104,15 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
     }
   }
 
-  describe("get votes for election and users"){
-    it("should return all votes for a user and election"){
+  describe("get votes for election and users") {
+    it("should return all votes for a user and election") {
       val electionId = UUID.randomUUID()
       val userId = UUID.randomUUID()
-      val voteIds = for(x <- 1 to 10) yield{
+      val voteIds = for (x <- 1 to 10) yield {
         target.voteDao.create(testVote.copy(
           id = UUID.randomUUID(),
           electionId = electionId,
-          userId = if(x <= 5)
+          userId = if (x <= 5)
             userId
           else
             UUID.randomUUID()
@@ -124,15 +124,15 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
     }
   }
 
-  describe("get votes for election and candidate"){
-    it("should return all votes for a candidate and election"){
+  describe("get votes for election and candidate") {
+    it("should return all votes for a candidate and election") {
       val electionId = UUID.randomUUID()
       val candidateId = UUID.randomUUID()
-      val voteIds = for(x <- 1 to 10) yield{
+      val voteIds = for (x <- 1 to 10) yield {
         target.voteDao.create(testVote.copy(
           id = UUID.randomUUID(),
           electionId = electionId,
-          candidateId = if(x <= 5)
+          candidateId = if (x <= 5)
             candidateId
           else
             UUID.randomUUID()
@@ -143,14 +143,14 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
       readVotes should equal(5)
     }
 
-    it("should be able to read one million records in less then a second"){
+    it("should be able to read one million records in less then a second") {
       val electionId = UUID.randomUUID()
       val candidateId = UUID.randomUUID()
       val voteIds = for (x <- 1 to 1000000) yield {
         target.voteDao.create(testVote.copy(
           id = UUID.randomUUID(),
           electionId = electionId,
-          candidateId = if(x%3 == 0)
+          candidateId = if (x % 3 == 0)
             candidateId
           else
             UUID.randomUUID()
@@ -166,14 +166,14 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
       readVotes should equal(voteIds.size / 3)
     }
 
-    it("should be able to read ten million records in less then a second"){
+    it("should be able to read ten million records in less then a second") {
       val electionId = UUID.randomUUID()
       val candidateId = UUID.randomUUID()
       val voteIds = for (x <- 1 to 10000000) yield {
         target.voteDao.create(testVote.copy(
           id = UUID.randomUUID(),
           electionId = electionId,
-          candidateId = if(x%3 == 0)
+          candidateId = if (x % 3 == 0)
             candidateId
           else
             UUID.randomUUID()

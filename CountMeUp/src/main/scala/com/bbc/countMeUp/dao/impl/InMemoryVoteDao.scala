@@ -7,12 +7,12 @@ import com.bbc.countMeUp.model.Vote
 
 import scala.collection.mutable
 
-trait InMemoryVoteDao extends VoteDao{
+trait InMemoryVoteDao extends VoteDao {
   override def voteDao = new InMemVoteDao
 
   var votes: collection.mutable.Map[UUID, Vote] = new mutable.HashMap[UUID, Vote]
 
-  class InMemVoteDao extends VoteDao{
+  class InMemVoteDao extends VoteDao {
     override def getVotesForElection(electionId: UUID): mutable.Map[UUID, Vote] = {
       votes.filter(v => v._2.electionId == electionId)
     }

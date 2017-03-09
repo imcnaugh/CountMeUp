@@ -8,7 +8,7 @@ import org.scalatest.{FunSpec, Matchers}
 
 class InMemoryUserDaoTest extends FunSpec with Matchers {
 
-  private class InMemoryUserDaoTest{
+  private class InMemoryUserDaoTest {
     this: InMemoryUserDao =>
   }
 
@@ -19,26 +19,26 @@ class InMemoryUserDaoTest extends FunSpec with Matchers {
     name = "test user"
   )
 
-  describe("create user test"){
-    it("creating a user should not throw an exception when ID is unique"){
+  describe("create user test") {
+    it("creating a user should not throw an exception when ID is unique") {
       val newId = UUID.randomUUID()
       target.userDao.create(testUser.copy(id = newId)) should equal(newId)
     }
 
-    it("creating a user with a non unique id should throw an exception"){
+    it("creating a user with a non unique id should throw an exception") {
       target.userDao.create(testUser)
-      intercept[Exception]{
+      intercept[Exception] {
         target.userDao.create(testUser)
       }
     }
   }
 
-  describe("read user test"){
-    it("attempting to read a user that does not exist should return None"){
-      target.userDao.read(UUID.randomUUID()) should equal (None)
+  describe("read user test") {
+    it("attempting to read a user that does not exist should return None") {
+      target.userDao.read(UUID.randomUUID()) should equal(None)
     }
 
-    it("reading a user from an ID should return that user"){
+    it("reading a user from an ID should return that user") {
       val userId = UUID.randomUUID()
       val readUser = testUser.copy(id = userId)
       target.userDao.create(readUser)
@@ -47,8 +47,8 @@ class InMemoryUserDaoTest extends FunSpec with Matchers {
     }
   }
 
-  describe("update user test"){
-    it("updating a user should reflect the updates when read"){
+  describe("update user test") {
+    it("updating a user should reflect the updates when read") {
       val userId = UUID.randomUUID()
       val initialUser = testUser.copy(id = userId)
       target.userDao.create(initialUser)
@@ -61,8 +61,8 @@ class InMemoryUserDaoTest extends FunSpec with Matchers {
 
     }
 
-    it("updating a user that does not exist should throw an exception"){
-      intercept[Exception]{
+    it("updating a user that does not exist should throw an exception") {
+      intercept[Exception] {
         target.userDao.update(testUser.copy(id = UUID.randomUUID()))
       }
     }
