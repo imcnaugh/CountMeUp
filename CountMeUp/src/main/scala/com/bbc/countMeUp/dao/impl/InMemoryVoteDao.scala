@@ -33,7 +33,9 @@ trait InMemoryVoteDao extends VoteDao{
       }
     }
 
-    override def delete(id: UUID): Unit = ???
+    override def delete(id: UUID): Unit = {
+      votes.remove(id)
+    }
   }
 
 }

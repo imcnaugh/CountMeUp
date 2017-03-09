@@ -74,18 +74,17 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
   }
 
   describe("delete vote test"){
-    it("should be able to delete a vote that exists")
-    //hard deletes for right now
-    val voteId = UUID.randomUUID()
-    val deleteVote = testVote.copy(id = voteId)
-    target.voteDao.create(deleteVote)
+    it("should be able to delete a vote that exists") {
+      //hard deletes for right now
+      val voteId = UUID.randomUUID()
+      val deleteVote = testVote.copy(id = voteId)
+      target.voteDao.create(deleteVote)
 
-    target.voteDao.read(voteId).get should equal(deleteVote)
+      target.voteDao.read(voteId).get should equal(deleteVote)
 
-    target.voteDao.delete(voteId)
+      target.voteDao.delete(voteId)
 
-    intercept[Exception]{
-      target.voteDao.read(voteId)
+      target.voteDao.read(voteId) should equal(None)
     }
   }
 
