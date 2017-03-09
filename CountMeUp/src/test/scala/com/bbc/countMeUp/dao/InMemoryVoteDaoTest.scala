@@ -37,4 +37,18 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
     }
   }
 
+  describe("read vote test"){
+    it("attempting to read a vote that does not exist should return None"){
+      target.voteDao.read(UUID.randomUUID()) should equal (None)
+    }
+
+    it("reading a vote from an ID should return that vote"){
+      val voteId = UUID.randomUUID()
+      val readVote = testVote.copy(id = voteId)
+      target.voteDao.create(readVote)
+
+      target.voteDao.read(voteId).get should equal(readVote)
+    }
+  }
+
 }
