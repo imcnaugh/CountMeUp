@@ -1,4 +1,4 @@
-package com.bbc.countMeUp.models
+package com.bbc.countMeUp.model
 
 import java.util.UUID
 
