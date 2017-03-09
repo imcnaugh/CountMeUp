@@ -104,4 +104,42 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
     }
   }
 
+  describe("performance test"){
+    it("should be able to read 1,000,000 records in less then a second") {
+      val electionId = UUID.randomUUID()
+      val voteIds = for (x <- 1 to 1000000) yield {
+        target.voteDao.create(testVote.copy(
+          id = UUID.randomUUID(),
+          electionId = electionId
+        ))
+      }
+
+      val startTime = System.currentTimeMillis()
+      val readVotes = target.voteDao.getVotesForElection(electionId)
+      val endTime = System.currentTimeMillis()
+      val runtime = endTime - startTime
+
+      runtime < 1000 should be(true)
+      readVotes.size should equal(voteIds.size)
+    }
+
+    it("should be able to read 10,000,000 records in less then a second") {
+      val electionId = UUID.randomUUID()
+      val voteIds = for (x <- 1 to 10000000) yield {
+        target.voteDao.create(testVote.copy(
+          id = UUID.randomUUID(),
+          electionId = electionId
+        ))
+      }
+
+      val startTime = System.currentTimeMillis()
+      val readVotes = target.voteDao.getVotesForElection(electionId)
+      val endTime = System.currentTimeMillis()
+      val runtime = endTime - startTime
+
+      Console.println(runtime)
+      runtime < 1000 should be(true)
+      readVotes.size should equal(voteIds.size)
+    }
+  }
 }
