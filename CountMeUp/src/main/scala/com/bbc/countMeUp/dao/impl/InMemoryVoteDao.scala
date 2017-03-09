@@ -13,7 +13,9 @@ trait InMemoryVoteDao extends VoteDao{
   var votes: collection.mutable.Map[UUID, Vote] = new mutable.HashMap[UUID, Vote]
 
   class InMemVoteDao extends VoteDao{
-    override def getVotesForElection(electionId: UUID): Iterable[Vote] = ???
+    override def getVotesForElection(electionId: UUID): mutable.Map[UUID, Vote] = {
+      votes.filter(v => v._2.electionId == electionId)
+    }
 
     override def create(model: Vote): UUID = {
       votes.put(model.id, model) match {

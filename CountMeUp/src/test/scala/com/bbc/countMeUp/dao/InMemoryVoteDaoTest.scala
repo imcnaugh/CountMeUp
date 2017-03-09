@@ -100,7 +100,7 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
 
       val readVotes = target.voteDao.getVotesForElection(electionId)
       readVotes.size should equal(voteIds.size)
-      readVotes.map(v => v.id) should equal(voteIds)
+      readVotes.keySet should equal(voteIds.toSet[UUID])
     }
   }
 

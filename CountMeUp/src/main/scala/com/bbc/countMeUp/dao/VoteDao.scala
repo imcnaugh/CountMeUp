@@ -12,7 +12,7 @@ trait VoteDao{
   def voteDao: VoteDao
 
   trait VoteDao extends CrudDao[Vote]{
-    def getVotesForElection(electionId: UUID): Iterable[Vote]
+    def getVotesForElection(electionId: UUID): collection.mutable.Map[UUID, Vote]
   }
 
 }
