@@ -13,6 +13,8 @@ trait VoteDao{
 
   trait VoteDao extends CrudDao[Vote]{
     def getVotesForElection(electionId: UUID): collection.mutable.Map[UUID, Vote]
+    def getVoteCountForElection(electionId: UUID): Int
+    def getVoteCountForElectionAndUser(electionId: UUID, userId: UUID): Int
+    def getVoteCountForElectionAndCandidate(electionId: UUID, candidateId: UUID): Int
   }
-
 }

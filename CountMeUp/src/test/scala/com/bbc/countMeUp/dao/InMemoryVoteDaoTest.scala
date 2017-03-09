@@ -104,42 +104,89 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers{
     }
   }
 
-  describe("performance test"){
-    it("should be able to read 1,000,000 records in less then a second") {
+  describe("get votes for election and users"){
+    it("should return all votes for a user and election"){
       val electionId = UUID.randomUUID()
+      val userId = UUID.randomUUID()
+      val voteIds = for(x <- 1 to 10) yield{
+        target.voteDao.create(testVote.copy(
+          id = UUID.randomUUID(),
+          electionId = electionId,
+          userId = if(x <= 5)
+            userId
+          else
+            UUID.randomUUID()
+        ))
+      }
+
+      val readVotes = target.voteDao.getVoteCountForElectionAndUser(electionId, userId)
+      readVotes should equal(5)
+    }
+  }
+
+  describe("get votes for election and candidate"){
+    it("should return all votes for a candidate and election"){
+      val electionId = UUID.randomUUID()
+      val candidateId = UUID.randomUUID()
+      val voteIds = for(x <- 1 to 10) yield{
+        target.voteDao.create(testVote.copy(
+          id = UUID.randomUUID(),
+          electionId = electionId,
+          candidateId = if(x <= 5)
+            candidateId
+          else
+            UUID.randomUUID()
+        ))
+      }
+
+      val readVotes = target.voteDao.getVoteCountForElectionAndCandidate(electionId, candidateId)
+      readVotes should equal(5)
+    }
+
+    it("should be able to read one million records in less then a second"){
+      val electionId = UUID.randomUUID()
+      val candidateId = UUID.randomUUID()
       val voteIds = for (x <- 1 to 1000000) yield {
         target.voteDao.create(testVote.copy(
           id = UUID.randomUUID(),
-          electionId = electionId
+          electionId = electionId,
+          candidateId = if(x%3 == 0)
+            candidateId
+          else
+            UUID.randomUUID()
         ))
       }
 
       val startTime = System.currentTimeMillis()
-      val readVotes = target.voteDao.getVotesForElection(electionId)
+      val readVotes = target.voteDao.getVoteCountForElectionAndCandidate(electionId, candidateId)
       val endTime = System.currentTimeMillis()
       val runtime = endTime - startTime
 
       runtime < 1000 should be(true)
-      readVotes.size should equal(voteIds.size)
+      readVotes should equal(voteIds.size / 3)
     }
 
-    it("should be able to read 10,000,000 records in less then a second") {
+    it("should be able to read ten million records in less then a second"){
       val electionId = UUID.randomUUID()
+      val candidateId = UUID.randomUUID()
       val voteIds = for (x <- 1 to 10000000) yield {
         target.voteDao.create(testVote.copy(
           id = UUID.randomUUID(),
-          electionId = electionId
+          electionId = electionId,
+          candidateId = if(x%3 == 0)
+            candidateId
+          else
+            UUID.randomUUID()
         ))
       }
 
       val startTime = System.currentTimeMillis()
-      val readVotes = target.voteDao.getVotesForElection(electionId)
+      val readVotes = target.voteDao.getVoteCountForElectionAndCandidate(electionId, candidateId)
       val endTime = System.currentTimeMillis()
       val runtime = endTime - startTime
 
-      Console.println(runtime)
       runtime < 1000 should be(true)
-      readVotes.size should equal(voteIds.size)
+      readVotes should equal(voteIds.size / 3)
     }
   }
 }

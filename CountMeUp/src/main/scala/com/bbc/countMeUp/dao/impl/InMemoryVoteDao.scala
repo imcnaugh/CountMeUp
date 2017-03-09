@@ -17,6 +17,18 @@ trait InMemoryVoteDao extends VoteDao{
       votes.filter(v => v._2.electionId == electionId)
     }
 
+    override def getVoteCountForElection(electionId: UUID): Int = {
+      votes.count(v => v._2.electionId == electionId)
+    }
+
+    override def getVoteCountForElectionAndUser(electionId: UUID, userId: UUID): Int = {
+      votes.count(v => v._2.electionId == electionId && v._2.userId == userId)
+    }
+
+    override def getVoteCountForElectionAndCandidate(electionId: UUID, candidateId: UUID): Int = {
+      votes.count(v => v._2.electionId == electionId && v._2.candidateId == candidateId)
+    }
+
     override def create(model: Vote): UUID = {
       votes.put(model.id, model) match {
         case None => model.id
