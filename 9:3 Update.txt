@@ -1,0 +1,19 @@
+9/3 Update
+
+I received a response to the email I sent out the previous day with questions regarding the tech challenge. I understand why the hiring manager was unable to give me the the specific answers I was looking for. But I like to think under normal working conditions, these would be fair questions to start a conversation about the scope of the application.
+
+I have created a system that revolves around 4 models, 
+-Users
+-Elections
+-Candidates
+-Votes
+I have created, and tested (using TDD) the Dao's for these 4 using a mutable scala hash map for data storage. I have my doubts of this being anything more then a tech demo/proof on concept, but for the time being it is working (and better then expected, using HashMap.count is returning the count of an election with 10 million votes in just over 300 milliseconds). If I had the time/build environment, I would gladly implement a database of some sorts. Im sure that would reduce runtime of the calls significantly. My current train of thought is to implement such a database come Sunday if I have the time.
+
+I have chosen to keep track of users votes, as opposed to simply incrementing numbers when voting (the numbers being, how many times a user has voted in an election, and another for candidates in each election). While the latter option would be much faster and simpler. For this assignment, I would prefer to making things a bit tougher for myself, and have a system of records for each vote cast. Not only will this prove who one an election and how many times each user has voted, It also gives me an opportunity to query large data sets, and that's kind of fun. Ill refrain from commenting to much on the morality of keeping a history of everyone's votes. Depending on the situation I can understand why you would not want these records, Ideally I would have a conversation about the scope of this application, and if we wanted to implement an anonymous voting system. These thought have crossed my mind, and given the opportunity I would ask questions, but for the time being I'm ignoring this.
+
+Tomorrow ill finish flushing out and testing the domain logic. This will mark the end of the meat of the application. From there on out its short list of what needs to be created next, the following is an ordered list of what my current plan of action is.
+- Creating meaningful exceptions, currently I'm just throwing Exception, I need to fix this.
+- Documenting/commenting the code, currently the state of comments in the code is miserable. I need to go back and add comments and scala docs for better readability. While writing, I find its best not to be to distracted by things like this that can be added in later.
+- A web layer wrapper for the domain, either scalatra, or spring web, the jury is still out on what framework to choose.
+- Adding a logger, It might be beyond the scope of this project, but an efficient logger with meaningful messages goes a long way.
+- Switching from in memory data stores to something a bit more substantial, I'm putting this at the bottom of the list due to worries over making this project to big for a tech assessment. If I were on site, and could oversee the deployment and configuration of the datastore this would have been priority one, but for now I have a working solution.

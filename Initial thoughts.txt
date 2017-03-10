@@ -1,0 +1,33 @@
+Initial thoughts:
+	Code needs to submitted via a public git repo
+		Gives me the opportunity to implement a few variations in different branches. 
+	They are asking for an application that can keep track of, and tally votes.
+	Is all must run on once machine.
+		single machine, or single technology? 
+		could I say, implement a DB of some sort? 
+			Hazelcast
+				Would compile into a single jar, with the rest of the application
+				Were not using the full potential of the library, might be better to just use standard java collections. 
+			MySql/oracle
+				technically could be running on the same machine,
+				setup would be a time consuming, for both me and the BBC.
+				Queries to get tally would be quick, assuming the DB is set up with this in mind. 
+			Mongo/No-Sql DB
+				Same issues as MySql
+			Built in collections
+				Keeps everything in the same jar
+				Probably faster then Hazelcast considering Hazelcast just built on top of java maps
+				I really would like something with a bit more permanence
+	Performance is a concern, tally should run in under a second.
+		why not make the tally real time with pushed notifications to client?
+		keeping the tally on the candate objects themselves and just returning the current count would be super quick, but might be cheating the assignment.
+	Extensibility
+		I would really like this to be able to run multiple competitions at the same time
+			If this was an actual work assignment, I would talk with the product owner for more details on the lifespan and use case of the application.
+	Implantation
+		A scala domain to interact with whatever data store I choose, seems like the obvious choice.
+		Should I consume that domain in a java/spring web layer?
+			Combines the speed and prettiness of scala, with Spring, a framework everyone knows and can be implemented quickly.
+			I have never see anything like this before, probably means its a bad idea.
+				TODO: research if this is dumb.
+			Shows off my ability in both languages.
