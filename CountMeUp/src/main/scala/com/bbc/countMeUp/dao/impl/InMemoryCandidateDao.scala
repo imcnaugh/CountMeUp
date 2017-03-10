@@ -35,5 +35,4 @@ trait InMemoryCandidateDao extends CandidateDao{
       candidates.remove(id)
     }
   }
-
 }
