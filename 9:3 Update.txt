@@ -16,4 +16,5 @@ Tomorrow ill finish flushing out and testing the domain logic. This will mark th
 - Documenting/commenting the code, currently the state of comments in the code is miserable. I need to go back and add comments and scala docs for better readability. While writing, I find its best not to be to distracted by things like this that can be added in later.
 - A web layer wrapper for the domain, either scalatra, or spring web, the jury is still out on what framework to choose.
 - Adding a logger, It might be beyond the scope of this project, but an efficient logger with meaningful messages goes a long way.
+- Look into a simple profiling tool, while I can brew up runtime numbers on my own, a professional grade system would sure be nice.
 - Switching from in memory data stores to something a bit more substantial, I'm putting this at the bottom of the list due to worries over making this project to big for a tech assessment. If I were on site, and could oversee the deployment and configuration of the datastore this would have been priority one, but for now I have a working solution.
