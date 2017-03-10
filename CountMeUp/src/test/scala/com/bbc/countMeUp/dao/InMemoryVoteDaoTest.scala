@@ -166,27 +166,28 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers {
       readVotes should equal(voteIds.size / 3)
     }
 
-    it("should be able to read ten million records in less then a second") {
-      val electionId = UUID.randomUUID()
-      val candidateId = UUID.randomUUID()
-      val voteIds = for (x <- 1 to 10000000) yield {
-        target.voteDao.create(testVote.copy(
-          id = UUID.randomUUID(),
-          electionId = electionId,
-          candidateId = if (x % 3 == 0)
-            candidateId
-          else
-            UUID.randomUUID()
-        ))
-      }
-
-      val startTime = System.currentTimeMillis()
-      val readVotes = target.voteDao.getVoteCountForElectionAndCandidate(electionId, candidateId)
-      val endTime = System.currentTimeMillis()
-      val runtime = endTime - startTime
-
-      runtime < 1000 should be(true)
-      readVotes should equal(voteIds.size / 3)
-    }
+//    Commented out for preformance reasons,
+//    it("should be able to read ten million records in less then a second") {
+//      val electionId = UUID.randomUUID()
+//      val candidateId = UUID.randomUUID()
+//      val voteIds = for (x <- 1 to 10000000) yield {
+//        target.voteDao.create(testVote.copy(
+//          id = UUID.randomUUID(),
+//          electionId = electionId,
+//          candidateId = if (x % 3 == 0)
+//            candidateId
+//          else
+//            UUID.randomUUID()
+//        ))
+//      }
+//
+//      val startTime = System.currentTimeMillis()
+//      val readVotes = target.voteDao.getVoteCountForElectionAndCandidate(electionId, candidateId)
+//      val endTime = System.currentTimeMillis()
+//      val runtime = endTime - startTime
+//
+//      runtime < 1000 should be(true)
+//      readVotes should equal(voteIds.size / 3)
+//    }
   }
 }
