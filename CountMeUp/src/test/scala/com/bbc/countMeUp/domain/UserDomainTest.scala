@@ -7,6 +7,8 @@ import com.bbc.countMeUp.model.User
 import org.scalatest.{FunSpec, Matchers}
 import org.mockito.Mockito._
 import org.mockito.Matchers._
+import org.mockito.invocation.InvocationOnMock
+import org.mockito.stubbing.Answer
 
 
 class UserDomainTest extends FunSpec with Matchers{
@@ -15,17 +17,19 @@ class UserDomainTest extends FunSpec with Matchers{
     val userDao = org.scalatest.mockito.MockitoSugar.mock[UserDao]
   }
 
-  private val target = new UserDomain with MockUserDao
-
   describe("add user tests"){
     it("user should be assigned a unique id, and inserted properly"){
+      val domain = new UserDomain with MockUserDao
       val name = "testing"
-      val id = UUID.randomUUID()
 
-      when(target.userDao.create(User((any[UUID]), name))).thenReturn(id)
-      User(id, name) should equal(target.addUser(name))
+      when(domain.userDao.create(User((any[UUID]), name))).thenAnswer(new Answer[UUID] {
+        override def answer(invocation: InvocationOnMock): UUID = invocation.getArguments()(0).asInstanceOf[User].id})
 
+      when(domain.userDao.read(any[UUID])).thenReturn(None)
+
+      val newUser = domain.addUser(name)
+      newUser.id should not be(None)
+      newUser.name should equal(name)
     }
   }
-
 }
