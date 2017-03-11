@@ -122,5 +122,27 @@ class UserDomainTest extends FunSpec with Matchers{
 
       verify(domain.voteDao, times(1)).create(any[Vote])
     }
+
+    it("a exception should be thrown if a user tries to vote for something not running in the election"){
+      val electionId = UUID.randomUUID()
+      val candidateId = UUID.randomUUID()
+      val userId = UUID.randomUUID()
+      when(domain.electionDao.read(electionId)).thenReturn(
+        Option(Election(
+          id = electionId,
+          candidates = Set(Candidate(
+            id = UUID.randomUUID(),
+            name = "someone else")),
+          maxVotesPerUser = 3)))
+      when(domain.voteDao.getVoteCountForElectionAndUser(electionId, userId)).thenReturn(3)
+      when(domain.userDao.read(userId)).thenReturn(Option(User(id = userId, name = "test user")))
+      when(domain.voteDao.read(any[UUID])).thenReturn(None)
+
+      intercept[Exception]{
+        val vote = domain.voteInElection(userId, electionId, candidateId)
+      }
+
+      verify(domain.voteDao, times(1)).create(any[Vote])
+    }
   }
 }
