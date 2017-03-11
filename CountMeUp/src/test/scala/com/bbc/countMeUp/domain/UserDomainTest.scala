@@ -112,7 +112,7 @@ class UserDomainTest extends FunSpec with Matchers{
       val candidateId = UUID.randomUUID()
       val userId = UUID.randomUUID()
       when(domain.electionDao.read(electionId)).thenReturn(None)
-      when(domain.voteDao.getVoteCountForElectionAndUser(electionId, userId)).thenReturn(3)
+      when(domain.voteDao.getVoteCountForElectionAndUser(electionId, userId)).thenReturn(0)
       when(domain.userDao.read(userId)).thenReturn(Option(User(id = userId, name = "test user")))
       when(domain.voteDao.read(any[UUID])).thenReturn(None)
 
@@ -134,8 +134,30 @@ class UserDomainTest extends FunSpec with Matchers{
             id = UUID.randomUUID(),
             name = "someone else")),
           maxVotesPerUser = 3)))
-      when(domain.voteDao.getVoteCountForElectionAndUser(electionId, userId)).thenReturn(3)
+      when(domain.voteDao.getVoteCountForElectionAndUser(electionId, userId)).thenReturn(0)
       when(domain.userDao.read(userId)).thenReturn(Option(User(id = userId, name = "test user")))
+      when(domain.voteDao.read(any[UUID])).thenReturn(None)
+
+      intercept[Exception]{
+        val vote = domain.voteInElection(userId, electionId, candidateId)
+      }
+
+      verify(domain.voteDao, times(1)).create(any[Vote])
+    }
+
+    it("a user cant vote if they dont exist"){
+      val electionId = UUID.randomUUID()
+      val candidateId = UUID.randomUUID()
+      val userId = UUID.randomUUID()
+      when(domain.electionDao.read(electionId)).thenReturn(
+        Option(Election(
+          id = electionId,
+          candidates = Set(Candidate(
+            id = candidateId,
+            name = "test candidate")),
+          maxVotesPerUser = 3)))
+      when(domain.voteDao.getVoteCountForElectionAndUser(electionId, userId)).thenReturn(0)
+      when(domain.userDao.read(userId)).thenReturn(None)
       when(domain.voteDao.read(any[UUID])).thenReturn(None)
 
       intercept[Exception]{
