@@ -49,7 +49,7 @@ class UserDomain {
                       userId: UUID,
                       electionId: UUID,
                       candidateId: UUID): Vote = {
-    val election = electionDao.read(electionId).getOrElse(throw new Exception)
+    val election = electionDao.read(electionId).getOrElse(throw new EntityDoesNotExistException(electionId))
     val userVoteCountInElection = voteDao.getVoteCountForElectionAndUser(electionId, userId)
 
     //validate user exists
