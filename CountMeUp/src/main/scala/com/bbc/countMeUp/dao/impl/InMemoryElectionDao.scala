@@ -10,7 +10,7 @@ import scala.collection.mutable
 trait InMemoryElectionDao extends ElectionDao{
   override def electionDao = new InMemElectionDao
 
-  var elections: collection.mutable.Map[UUID, Election] = new mutable.HashMap[UUID, Election]
+  var elections = DataStorage.elections
 
   class InMemElectionDao extends ElectionDao {
     override def create(model: Election): UUID = {

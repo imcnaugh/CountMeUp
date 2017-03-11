@@ -173,10 +173,7 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers {
         target.voteDao.create(testVote.copy(
           id = UUID.randomUUID(),
           electionId = electionId,
-          candidateId = if (x % 3 == 0)
-            candidateId
-          else
-            UUID.randomUUID()
+          candidateId = candidateId
         ))
       }
 
@@ -185,8 +182,8 @@ class InMemoryVoteDaoTest extends FunSpec with Matchers {
       val endTime = System.currentTimeMillis()
       val runtime = endTime - startTime
 
-      runtime < 1000 should be(true)
-      readVotes should equal(voteIds.size / 3)
+      runtime should be < 1000L
+      readVotes should equal(voteIds.size)
     }
   }
 }
