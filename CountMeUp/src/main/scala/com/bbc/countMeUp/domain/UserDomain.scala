@@ -17,7 +17,11 @@ class UserDomain {
     newUser
   }
 
+  @throws(classOf[Exception])
   def getUser(id: UUID): User = {
-    User(UUID.randomUUID(), "")
+    userDao.read(id) match {
+      case u: Some[User] => u.get
+      case _ => throw new Exception
+    }
   }
 }
