@@ -4,7 +4,7 @@ import java.util.UUID
 
 import com.bbc.countMeUp.dao.{CandidateDao, ElectionDao, VoteDao}
 import com.bbc.countMeUp.domain.util.IdUtils
-import com.bbc.countMeUp.model.{Candidate, Election}
+import com.bbc.countMeUp.model.{Candidate, Election, ElectionResults}
 
 class ElectionDomain {
   this: ElectionDao with VoteDao with CandidateDao =>
@@ -30,6 +30,6 @@ class ElectionDomain {
 
   //TODO throw better exceptions
   @throws(classOf[Exception])
-  def getElectionResults(id: UUID): Election = ???
+  def getElectionResults(id: UUID): ElectionResults = ???
 
 }
