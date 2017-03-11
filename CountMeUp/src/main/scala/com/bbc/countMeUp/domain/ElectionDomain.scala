@@ -4,7 +4,7 @@ import java.util.UUID
 
 import com.bbc.countMeUp.dao.{CandidateDao, ElectionDao, VoteDao}
 import com.bbc.countMeUp.domain.util.IdUtils
-import com.bbc.countMeUp.model.{Candidate, Election, ElectionResults}
+import com.bbc.countMeUp.model.{Candidate, CandidateTally, Election, ElectionResults}
 
 class ElectionDomain {
   this: ElectionDao with VoteDao with CandidateDao =>
@@ -30,6 +30,20 @@ class ElectionDomain {
 
   //TODO throw better exceptions
   @throws(classOf[Exception])
-  def getElectionResults(id: UUID): ElectionResults = ???
+  def getElectionResults(id: UUID): ElectionResults = {
+    val election = electionDao.read(id) match {
+      case e: Some[Election] => e.get
+      case _ => throw new Exception
+    }
 
+    ElectionResults(
+      electionId = election.id,
+      maxVotesPerUser = election.maxVotesPerUser,
+      results = election.candidates.map(c => {
+        CandidateTally(
+          candidate = c,
+          votes = voteDao.getVoteCountForElectionAndCandidate(id, c.id)
+        )})
+    )
+  }
 }
