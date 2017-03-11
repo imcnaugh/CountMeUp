@@ -119,7 +119,7 @@ class ElectionDomainTest extends FunSpec with Matchers{
       when(domain.voteDao.getVoteCountForElectionAndCandidate(election.id, candidate2.id)).thenReturn(candidate2Votes)
       when(domain.voteDao.getVoteCountForElectionAndCandidate(election.id, candidate3.id)).thenReturn(candidate3Votes)
 
-      val expectedCandidateTallys = Seq(
+      val expectedCandidateTallys = Set(
         CandidateTally(candidate1, candidate1Votes),
         CandidateTally(candidate2, candidate2Votes),
         CandidateTally(candidate3, candidate3Votes)
@@ -151,7 +151,7 @@ class ElectionDomainTest extends FunSpec with Matchers{
         ),
         maxVotesPerUser = 3)
 
-      when(domain.electionDao.read(election.id)).thenReturn(Option(election))
+      when(domain.electionDao.read(election.id)).thenReturn(None)
       when(domain.voteDao.getVoteCountForElectionAndCandidate(election.id, candidate1.id)).thenReturn(candidate1Votes)
       when(domain.voteDao.getVoteCountForElectionAndCandidate(election.id, candidate2.id)).thenReturn(candidate2Votes)
       when(domain.voteDao.getVoteCountForElectionAndCandidate(election.id, candidate3.id)).thenReturn(candidate3Votes)
