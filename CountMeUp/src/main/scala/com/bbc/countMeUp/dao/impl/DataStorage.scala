@@ -11,5 +11,4 @@ object DataStorage {
   var elections: collection.mutable.Map[UUID, Election] = new mutable.HashMap[UUID, Election]
   var users: collection.mutable.Map[UUID, User] = new mutable.HashMap[UUID, User]
   var votes: collection.mutable.Map[UUID, Vote] = new mutable.HashMap[UUID, Vote]
-
 }

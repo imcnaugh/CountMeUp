@@ -10,6 +10,13 @@ import com.bbc.countMeUp.model.{Candidate, CandidateTally, Election, ElectionRes
 class ElectionDomain {
   this: ElectionDao with VoteDao with CandidateDao =>
 
+  /**
+    * Adds an election
+    *
+    * @param candidateIds
+    * @param maxVotesPerUser
+    * @return Election
+    */
   def addElection(candidateIds: Set[UUID],
                   maxVotesPerUser: Int): Election = {
     //verify all candidates exists
@@ -27,6 +34,12 @@ class ElectionDomain {
     newElection
   }
 
+  /**
+    * Returns the current results of an election
+    *
+    * @param id
+    * @return ElectionResults object
+    */
   def getElectionResults(id: UUID): ElectionResults = {
     val election = electionDao.read(id) match {
       case e: Some[Election] => e.get

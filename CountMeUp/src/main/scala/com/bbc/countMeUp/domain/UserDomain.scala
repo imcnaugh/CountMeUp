@@ -10,6 +10,12 @@ import com.bbc.countMeUp.model.{User, Vote}
 class UserDomain {
   this: UserDao with VoteDao with ElectionDao =>
 
+  /**
+    * Adds a user
+    *
+    * @param name
+    * @return User that was created
+    */
   def addUser(name:String): User = {
     val newUser = User(
       IdUtils.uniqueId(userDao.read),
@@ -18,6 +24,12 @@ class UserDomain {
     newUser
   }
 
+  /**
+    * Searches for a user
+    *
+    * @param id
+    * @return User
+    */
   def getUser(id: UUID): User = {
     userDao.read(id) match {
       case u: Some[User] => u.get
@@ -25,6 +37,14 @@ class UserDomain {
     }
   }
 
+  /**
+    * Casts a vote for a user in an election for a candidate
+    *
+    * @param userId
+    * @param electionId
+    * @param candidateId
+    * @return Vote that was cast
+    */
   def voteInElection(
                       userId: UUID,
                       electionId: UUID,
