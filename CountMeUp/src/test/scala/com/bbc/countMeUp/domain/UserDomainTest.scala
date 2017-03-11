@@ -2,7 +2,7 @@ package com.bbc.countMeUp.domain
 
 import java.util.UUID
 
-import com.bbc.countMeUp.dao.UserDao
+import com.bbc.countMeUp.dao.{ElectionDao, UserDao, VoteDao}
 import com.bbc.countMeUp.model.User
 import org.scalatest.{FunSpec, Matchers}
 import org.mockito.Mockito._
@@ -17,7 +17,15 @@ class UserDomainTest extends FunSpec with Matchers{
     val userDao = org.scalatest.mockito.MockitoSugar.mock[UserDao]
   }
 
-  val domain = new UserDomain with MockUserDao
+  trait MockVoteDao extends VoteDao{
+    val voteDao = org.scalatest.mockito.MockitoSugar.mock[VoteDao]
+  }
+
+  trait MockElectionDao extends ElectionDao {
+    val electionDao = org.scalatest.mockito.MockitoSugar.mock[ElectionDao]
+  }
+
+  val domain = new UserDomain with MockUserDao with MockVoteDao with MockElectionDao
 
   describe("add user tests"){
     it("user should be assigned a unique id, and inserted properly"){

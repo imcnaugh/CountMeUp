@@ -2,12 +2,12 @@ package com.bbc.countMeUp.domain
 
 import java.util.UUID
 
-import com.bbc.countMeUp.dao.UserDao
+import com.bbc.countMeUp.dao.{ElectionDao, UserDao, VoteDao}
 import com.bbc.countMeUp.dao.util.IdUtils
-import com.bbc.countMeUp.model.{BaseModel, User}
+import com.bbc.countMeUp.model.User
 
 class UserDomain {
-  this: UserDao =>
+  this: UserDao with VoteDao with ElectionDao =>
 
   def addUser(name:String): User = {
     val newUser = User(
@@ -17,6 +17,7 @@ class UserDomain {
     newUser
   }
 
+  //TODO throw better exceptions
   @throws(classOf[Exception])
   def getUser(id: UUID): User = {
     userDao.read(id) match {
