@@ -3,7 +3,7 @@ package com.bbc.countMeUp.domain
 import java.util.UUID
 
 import com.bbc.countMeUp.dao.{ElectionDao, UserDao, VoteDao}
-import com.bbc.countMeUp.model.User
+import com.bbc.countMeUp.model.{Candidate, Election, User, Vote}
 import org.scalatest.{FunSpec, Matchers}
 import org.mockito.Mockito._
 import org.mockito.Matchers._
@@ -58,6 +58,31 @@ class UserDomainTest extends FunSpec with Matchers{
       intercept[Exception] {
         domain.getUser(id)
       }
+    }
+  }
+
+  describe("voting tests"){
+    it("A user should be able to vote if they have not reached the limit for an election, and the candidate is valid"){
+      val electionId = UUID.randomUUID()
+      val candidateId = UUID.randomUUID()
+      val userId = UUID.randomUUID()
+      when(domain.electionDao.read(electionId)).thenReturn(
+        Option(Election(
+          id = electionId,
+          candidates = Set(Candidate(
+            id = candidateId,
+            name = "test candidate")),
+          maxVotesPerUser = 1)))
+      when(domain.voteDao.getVoteCountForElectionAndUser(electionId, userId)).thenReturn(0)
+      when(domain.userDao.read(userId)).thenReturn(Option(User(id = userId, name = "test user")))
+      when(domain.voteDao.read(any[UUID])).thenReturn(None)
+
+      val vote = domain.voteInElection(userId, electionId, candidateId)
+
+      verify(domain.voteDao, times(1)).create(any[Vote])
+      vote.id should not be(None)
+      vote.electionId should equal(electionId)
+      vote.candidateId should equal(candidateId)
     }
   }
 }
