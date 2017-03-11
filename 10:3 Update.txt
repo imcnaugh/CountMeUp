@@ -1,0 +1,17 @@
+10/3 Update
+
+I have completed the domain, at least the logic in it. Now you are able to run any number of elections at the same time, each with its own configurable amount of maxUserVotes. I ran into an issue with my data store and the cake model. I had a hunch I would run into this but was optimistic that I could avoid it. Essentially, cake makes a new instance of a dependency everytime one needed, and keeping the data in the object being created meant it was never shared with any other instance of the same dao. So I pulled out the data into a DataStorage object with 4 hash maps for each object, these are static object that can be accessed from any instance of the Dao, and have solved the issue for the time being.
+
+While testing I have noticed that retrieving the results of an election back in under a second is no problem, ever for 10 million votes in an election. But populating the data store with that many votes takes quite a bit of time. I am half tempted to focus on implementing a database to relive this problem. A database would also relieve me of having a Data store class. I fear by implementing a DB, I will run out of time to do a web layer, or proper logging. Ill have to sleep on this decision.
+
+Exception handling is still a mess, I plan on solving this first thing tomorrow, along with documenting the code. I would like to take another pass at my models as well and see if there is any improvements I can make to them. But mostly I have been debating the issues of the database today. 
+
+Also, today I played around with switching the vote data structure to a list from a map. This seemed to have no significant improvement on performance. Tomorrow before I switch over to a real DB, ill take numbers down on runtime to populate and read a given number of votes with both my in memory system, and the database in place.
+
+Below is an updated ordered to-do list for this project
+- Creating meaningful exceptions, currently I'm just throwing Exception, I need to fix this.
+- Documenting/commenting the code, currently the state of comments in the code is miserable. I need to go back and add comments and scala docs for better readability. While writing, I find its best not to be to distracted by things like this that can be added in later.
+- Switching from in memory data stores to something a bit more substantial, I'm putting this at the bottom of the list due to worries over making this project to big for a tech assessment. If I were on site, and could oversee the deployment and configuration of the datastore this would have been priority one, but for now I have a working solution.
+- A web layer wrapper for the domain, either scalatra, or spring web, the jury is still out on what framework to choose.
+- Adding a logger, It might be beyond the scope of this project, but an efficient logger with meaningful messages goes a long way.
+- Look into a simple profiling tool, while I can brew up runtime numbers on my own, a professional grade system would sure be nice.
