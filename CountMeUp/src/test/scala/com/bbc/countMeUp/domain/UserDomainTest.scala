@@ -43,7 +43,7 @@ class UserDomainTest extends FunSpec with Matchers{
   }
 
   describe("get user tests"){
-    it("looking up a user should suceed if the user exist"){
+    it("looking up a user should succeed if the user exist"){
       val id = UUID.randomUUID()
       val name = "test user"
       when(domain.userDao.read(id)).thenReturn(Option[User](User(id = id, name = name)))
