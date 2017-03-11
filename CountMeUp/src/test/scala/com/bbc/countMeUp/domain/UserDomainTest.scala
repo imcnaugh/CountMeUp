@@ -45,7 +45,7 @@ class UserDomainTest extends FunSpec with Matchers{
 
     it("looking up a user should fail if the user does not exist"){
       val id = UUID.randomUUID()
-      when(domain.userDao.read(id)).thenThrow(new Exception)
+      when(domain.userDao.read(id)).thenReturn(None)
 
       intercept[Exception] {
         domain.getUser(id)
