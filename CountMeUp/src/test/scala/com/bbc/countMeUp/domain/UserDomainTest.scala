@@ -61,8 +61,8 @@ class UserDomainTest extends FunSpec with Matchers{
     }
   }
 
-  describe("voting tests"){
-    it("A user should be able to vote if they have not reached the limit for an election, and the candidate is valid"){
+  describe("voting tests") {
+    it("A user should be able to vote if they have not reached the limit for an election, and the candidate is valid") {
       val electionId = UUID.randomUUID()
       val candidateId = UUID.randomUUID()
       val userId = UUID.randomUUID()
@@ -80,9 +80,31 @@ class UserDomainTest extends FunSpec with Matchers{
       val vote = domain.voteInElection(userId, electionId, candidateId)
 
       verify(domain.voteDao, times(1)).create(any[Vote])
-      vote.id should not be(None)
+      vote.id should not be (None)
       vote.electionId should equal(electionId)
       vote.candidateId should equal(candidateId)
     }
+
+    it("a user should not be able to vote if they have reached the limit of votes for an election"){
+      val electionId = UUID.randomUUID()
+      val candidateId = UUID.randomUUID()
+      val userId = UUID.randomUUID()
+      when(domain.electionDao.read(electionId)).thenReturn(
+        Option(Election(
+          id = electionId,
+          candidates = Set(Candidate(
+            id = candidateId,
+            name = "test candidate")),
+          maxVotesPerUser = 3)))
+      when(domain.voteDao.getVoteCountForElectionAndUser(electionId, userId)).thenReturn(3)
+      when(domain.userDao.read(userId)).thenReturn(Option(User(id = userId, name = "test user")))
+      when(domain.voteDao.read(any[UUID])).thenReturn(None)
+
+      intercept[Exception]{
+        val vote = domain.voteInElection(userId, electionId, candidateId)
+      }
+    }
+
+    
   }
 }
