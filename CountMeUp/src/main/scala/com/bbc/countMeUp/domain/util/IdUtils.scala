@@ -1,4 +1,4 @@
-package com.bbc.countMeUp.dao.util
+package com.bbc.countMeUp.domain.util
 
 import java.util.UUID
 

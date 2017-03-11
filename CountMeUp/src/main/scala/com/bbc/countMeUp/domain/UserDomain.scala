@@ -3,7 +3,7 @@ package com.bbc.countMeUp.domain
 import java.util.UUID
 
 import com.bbc.countMeUp.dao.{ElectionDao, UserDao, VoteDao}
-import com.bbc.countMeUp.dao.util.IdUtils
+import com.bbc.countMeUp.domain.util.IdUtils
 import com.bbc.countMeUp.model.{User, Vote}
 
 class UserDomain {
