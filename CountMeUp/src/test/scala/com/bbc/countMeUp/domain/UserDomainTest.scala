@@ -103,8 +103,24 @@ class UserDomainTest extends FunSpec with Matchers{
       intercept[Exception]{
         val vote = domain.voteInElection(userId, electionId, candidateId)
       }
+
+      verify(domain.voteDao, times(1)).create(any[Vote])
     }
 
-    
+    it("a exception should be thrown if a user tries to vote in an election that does not exist"){
+      val electionId = UUID.randomUUID()
+      val candidateId = UUID.randomUUID()
+      val userId = UUID.randomUUID()
+      when(domain.electionDao.read(electionId)).thenReturn(None)
+      when(domain.voteDao.getVoteCountForElectionAndUser(electionId, userId)).thenReturn(3)
+      when(domain.userDao.read(userId)).thenReturn(Option(User(id = userId, name = "test user")))
+      when(domain.voteDao.read(any[UUID])).thenReturn(None)
+
+      intercept[Exception]{
+        val vote = domain.voteInElection(userId, electionId, candidateId)
+      }
+
+      verify(domain.voteDao, times(1)).create(any[Vote])
+    }
   }
 }
