@@ -10,7 +10,6 @@ class ElectionDomain {
   this: ElectionDao with VoteDao with CandidateDao =>
 
   //TODO throw better exceptions
-  @throws(classOf[Exception])
   def addElection(candidateIds: Set[UUID],
                   maxVotesPerUser: Int): Election = {
     //verify all candidates exists
@@ -29,7 +28,6 @@ class ElectionDomain {
   }
 
   //TODO throw better exceptions
-  @throws(classOf[Exception])
   def getElectionResults(id: UUID): ElectionResults = {
     val election = electionDao.read(id) match {
       case e: Some[Election] => e.get

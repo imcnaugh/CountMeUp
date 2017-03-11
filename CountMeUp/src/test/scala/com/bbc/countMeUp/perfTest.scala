@@ -4,7 +4,6 @@ import java.util.UUID
 
 import com.bbc.countMeUp.dao.impl._
 import com.bbc.countMeUp.domain.{CandidateDomain, ElectionDomain, UserDomain}
-import com.bbc.countMeUp.model.Vote
 import org.scalatest.{FunSpec, Matchers}
 
 import scala.util.Random

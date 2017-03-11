@@ -3,9 +3,8 @@ package com.bbc.countMeUp.dao.impl
 import java.util.UUID
 
 import com.bbc.countMeUp.dao.CandidateDao
+import com.bbc.countMeUp.exception.{CreateException, EntityDoesNotExistException}
 import com.bbc.countMeUp.model.Candidate
-
-import scala.collection.mutable
 
 trait InMemoryCandidateDao extends CandidateDao{
   override def candidateDao = new InMemCandidateDao
@@ -16,7 +15,7 @@ trait InMemoryCandidateDao extends CandidateDao{
     override def create(model: Candidate): UUID = {
       candidates.put(model.id, model) match {
         case None => model.id
-        case _ => throw new Exception
+        case _ => throw new CreateException(model)
       }
     }
 
@@ -26,7 +25,7 @@ trait InMemoryCandidateDao extends CandidateDao{
 
     override def update(model: Candidate): Candidate = {
       candidates.put(model.id, model) match {
-        case None => throw new Exception
+        case None => throw new EntityDoesNotExistException(model)
         case e: Some[Candidate] => e.get
       }
     }

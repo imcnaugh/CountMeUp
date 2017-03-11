@@ -3,6 +3,7 @@ package com.bbc.countMeUp.dao.impl
 import java.util.UUID
 
 import com.bbc.countMeUp.dao.VoteDao
+import com.bbc.countMeUp.exception.{CreateException, EntityDoesNotExistException}
 import com.bbc.countMeUp.model.Vote
 
 import scala.collection.mutable
@@ -32,7 +33,7 @@ trait InMemoryVoteDao extends VoteDao {
     override def create(model: Vote): UUID = {
       votes.put(model.id, model) match {
         case None => model.id
-        case _ => throw new Exception
+        case _ => throw new CreateException(model)
       }
     }
 
@@ -42,7 +43,7 @@ trait InMemoryVoteDao extends VoteDao {
 
     override def update(model: Vote): Vote = {
       votes.put(model.id, model) match {
-        case None => throw new Exception
+        case None => throw new EntityDoesNotExistException(model)
         case v: Some[Vote] => v.get
       }
     }
