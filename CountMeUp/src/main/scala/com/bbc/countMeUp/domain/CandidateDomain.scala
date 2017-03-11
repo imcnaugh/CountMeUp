@@ -4,6 +4,7 @@ import java.util.UUID
 
 import com.bbc.countMeUp.dao.CandidateDao
 import com.bbc.countMeUp.domain.util.IdUtils
+import com.bbc.countMeUp.exception.EntityDoesNotExistException
 import com.bbc.countMeUp.model.Candidate
 
 class CandidateDomain {
@@ -18,12 +19,10 @@ class CandidateDomain {
     newCandidate
   }
 
-  //TODO throw better exceptions
-  @throws(classOf[Exception])
   def getCandidate(id: UUID): Candidate = {
     candidateDao.read(id) match {
       case c: Some[Candidate] => c.get
-      case _ => throw new Exception
+      case _ => throw new EntityDoesNotExistException(id)
     }
   }
 

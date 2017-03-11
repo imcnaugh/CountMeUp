@@ -3,6 +3,7 @@ package com.bbc.countMeUp.domain
 import java.util.UUID
 
 import com.bbc.countMeUp.dao.{ElectionDao, UserDao, VoteDao}
+import com.bbc.countMeUp.exception.{EntityDoesNotExistException, ReachedElectionVoteLimitException}
 import com.bbc.countMeUp.model.{Candidate, Election, User, Vote}
 import org.scalatest.{FunSpec, Matchers}
 import org.mockito.Mockito._
@@ -55,7 +56,7 @@ class UserDomainTest extends FunSpec with Matchers{
       val id = UUID.randomUUID()
       when(domain.userDao.read(id)).thenReturn(None)
 
-      intercept[Exception] {
+      intercept[EntityDoesNotExistException] {
         domain.getUser(id)
       }
     }
@@ -100,7 +101,7 @@ class UserDomainTest extends FunSpec with Matchers{
       when(domain.userDao.read(userId)).thenReturn(Option(User(id = userId, name = "test user")))
       when(domain.voteDao.read(any[UUID])).thenReturn(None)
 
-      intercept[Exception]{
+      intercept[ReachedElectionVoteLimitException]{
         val vote = domain.voteInElection(userId, electionId, candidateId)
       }
 
@@ -116,7 +117,7 @@ class UserDomainTest extends FunSpec with Matchers{
       when(domain.userDao.read(userId)).thenReturn(Option(User(id = userId, name = "test user")))
       when(domain.voteDao.read(any[UUID])).thenReturn(None)
 
-      intercept[Exception]{
+      intercept[EntityDoesNotExistException]{
         val vote = domain.voteInElection(userId, electionId, candidateId)
       }
 
@@ -138,7 +139,7 @@ class UserDomainTest extends FunSpec with Matchers{
       when(domain.userDao.read(userId)).thenReturn(Option(User(id = userId, name = "test user")))
       when(domain.voteDao.read(any[UUID])).thenReturn(None)
 
-      intercept[Exception]{
+      intercept[EntityDoesNotExistException]{
         val vote = domain.voteInElection(userId, electionId, candidateId)
       }
 
@@ -160,7 +161,7 @@ class UserDomainTest extends FunSpec with Matchers{
       when(domain.userDao.read(userId)).thenReturn(None)
       when(domain.voteDao.read(any[UUID])).thenReturn(None)
 
-      intercept[Exception]{
+      intercept[EntityDoesNotExistException]{
         val vote = domain.voteInElection(userId, electionId, candidateId)
       }
 

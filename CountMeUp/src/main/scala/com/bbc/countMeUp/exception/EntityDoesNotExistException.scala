@@ -1,7 +1,7 @@
 package com.bbc.countMeUp.exception
 
-import com.bbc.countMeUp.model.BaseModel
+import java.util.UUID
 
-class EntityDoesNotExistException(model: BaseModel) extends Exception{
+class EntityDoesNotExistException(id: UUID) extends Exception{
 
 }

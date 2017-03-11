@@ -4,6 +4,7 @@ import java.util.UUID
 
 import com.bbc.countMeUp.dao.{ElectionDao, UserDao, VoteDao}
 import com.bbc.countMeUp.domain.util.IdUtils
+import com.bbc.countMeUp.exception.{EntityDoesNotExistException, ReachedElectionVoteLimitException}
 import com.bbc.countMeUp.model.{User, Vote}
 
 class UserDomain {
@@ -17,17 +18,13 @@ class UserDomain {
     newUser
   }
 
-  //TODO throw better exceptions
-  @throws(classOf[Exception])
   def getUser(id: UUID): User = {
     userDao.read(id) match {
       case u: Some[User] => u.get
-      case _ => throw new Exception
+      case _ => throw new EntityDoesNotExistException(id)
     }
   }
 
-  //TODO throw better exceptions
-  @throws(classOf[Exception])
   def voteInElection(
                       userId: UUID,
                       electionId: UUID,
@@ -37,15 +34,15 @@ class UserDomain {
 
     //validate user exists
     if(userDao.read(userId) == None){
-      throw new Exception
+      throw new EntityDoesNotExistException(userId)
     }
     //Election not found
     if(election.maxVotesPerUser <= userVoteCountInElection){
-      throw new Exception
+      throw new ReachedElectionVoteLimitException
     }
     // Candidate is not in this election
     if(election.candidates.find(c => c.id == candidateId) == None){
-      throw new Exception
+      throw new EntityDoesNotExistException(candidateId)
     }
 
     val newVote = Vote(

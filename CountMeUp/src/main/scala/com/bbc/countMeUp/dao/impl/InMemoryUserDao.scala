@@ -3,7 +3,7 @@ package com.bbc.countMeUp.dao.impl
 import java.util.UUID
 
 import com.bbc.countMeUp.dao.UserDao
-import com.bbc.countMeUp.exception.{CreateException, EntityDoesNotExistException}
+import com.bbc.countMeUp.exception.{EntityAlreadyExistsException, EntityDoesNotExistException}
 import com.bbc.countMeUp.model.User
 
 trait InMemoryUserDao extends UserDao {
@@ -15,7 +15,7 @@ trait InMemoryUserDao extends UserDao {
     override def create(model: User): UUID = {
       users.put(model.id, model) match {
         case None => model.id
-        case _ => throw new CreateException(model)
+        case _ => throw new EntityAlreadyExistsException(model)
       }
     }
 
@@ -25,7 +25,7 @@ trait InMemoryUserDao extends UserDao {
 
     override def update(model: User): User = {
       users.put(model.id, model) match {
-        case None => throw new EntityDoesNotExistException(model)
+        case None => throw new EntityDoesNotExistException(model.id)
         case u: Some[User] => u.get
       }
     }

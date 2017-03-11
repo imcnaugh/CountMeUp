@@ -3,6 +3,7 @@ package com.bbc.countMeUp.domain
 import java.util.UUID
 
 import com.bbc.countMeUp.dao.CandidateDao
+import com.bbc.countMeUp.exception.EntityDoesNotExistException
 import com.bbc.countMeUp.model.Candidate
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -46,7 +47,7 @@ class CandidateDomainTest extends FunSpec with Matchers {
       val id = UUID.randomUUID()
       when(domain.candidateDao.read(id)).thenReturn(None)
 
-      intercept[Exception] {
+      intercept[EntityDoesNotExistException] {
         domain.getCandidate(id)
       }
     }

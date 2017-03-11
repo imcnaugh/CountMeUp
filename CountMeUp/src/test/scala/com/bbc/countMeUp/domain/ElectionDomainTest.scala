@@ -3,6 +3,7 @@ package com.bbc.countMeUp.domain
 import java.util.UUID
 
 import com.bbc.countMeUp.dao.{CandidateDao, ElectionDao, VoteDao}
+import com.bbc.countMeUp.exception.EntityDoesNotExistException
 import com.bbc.countMeUp.model.{Candidate, CandidateTally, Election, ElectionResults}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
@@ -86,7 +87,7 @@ class ElectionDomainTest extends FunSpec with Matchers{
 
       when(domain.electionDao.read(any[UUID])).thenReturn(None)
 
-      intercept[Exception] {
+      intercept[EntityDoesNotExistException] {
         val newElection = domain.addElection(
           Set(
             candidate1.id,
@@ -156,7 +157,7 @@ class ElectionDomainTest extends FunSpec with Matchers{
       when(domain.voteDao.getVoteCountForElectionAndCandidate(election.id, candidate2.id)).thenReturn(candidate2Votes)
       when(domain.voteDao.getVoteCountForElectionAndCandidate(election.id, candidate3.id)).thenReturn(candidate3Votes)
 
-      intercept[Exception]{
+      intercept[EntityDoesNotExistException]{
         val electionResults = domain.getElectionResults(election.id)
       }
     }

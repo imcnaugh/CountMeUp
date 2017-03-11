@@ -3,6 +3,7 @@ package com.bbc.countMeUp.dao
 import java.util.UUID
 
 import com.bbc.countMeUp.dao.impl.InMemoryCandidateDao
+import com.bbc.countMeUp.exception.{EntityAlreadyExistsException, EntityDoesNotExistException}
 import com.bbc.countMeUp.model.Candidate
 import org.scalatest.{FunSpec, Matchers}
 
@@ -27,7 +28,7 @@ class InMemoryCandidateDaoTest extends FunSpec with Matchers{
 
     it("creating a candidate with a non unique id should throw an exception") {
       target.candidateDao.create(testCandidate)
-      intercept[Exception] {
+      intercept[EntityAlreadyExistsException] {
         target.candidateDao.create(testCandidate)
       }
     }
@@ -62,7 +63,7 @@ class InMemoryCandidateDaoTest extends FunSpec with Matchers{
     }
 
     it("updating a candidate that does not exist should throw an exception") {
-      intercept[Exception] {
+      intercept[EntityDoesNotExistException] {
         target.candidateDao.update(testCandidate.copy(id = UUID.randomUUID()))
       }
     }
