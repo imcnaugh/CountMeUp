@@ -13,6 +13,8 @@ import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 
+//TODO find a better way to parse out these objects coming back from mongo
+
 trait InMemoryElectionDao extends ElectionDao{
   override def electionDao = new InMemElectionDao
 
