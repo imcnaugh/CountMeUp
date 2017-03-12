@@ -13,8 +13,8 @@ class perfTest extends FunSpec with Matchers{
   describe("testing"){
     it("perf test"){
       val userDomain = new UserDomain with InMemoryUserDao with InMemoryVoteDao with InMemoryElectionDao
-      val electionDomain = new ElectionDomain with InMemoryElectionDao with InMemoryVoteDao with  InMemoryCandidateDao
-      val candidateDomain = new CandidateDomain with InMemoryCandidateDao
+      val electionDomain = new ElectionDomain with InMemoryElectionDao with InMemoryVoteDao with  MongoCandidateDao
+      val candidateDomain = new CandidateDomain with MongoCandidateDao
 
       val candidate1 = candidateDomain.addCandidate("candidate1")
       val candidate2 = candidateDomain.addCandidate("candidate2")

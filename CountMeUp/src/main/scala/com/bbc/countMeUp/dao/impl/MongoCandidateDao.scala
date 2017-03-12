@@ -13,16 +13,13 @@ import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 
-trait InMemoryCandidateDao extends CandidateDao{
+trait MongoCandidateDao extends CandidateDao{
   override def candidateDao = new InMemCandidateDao
 
   var candidates = DataStorage.candidates
 
   class InMemCandidateDao extends CandidateDao {
 
-    val mongoclient: MongoClient = MongoClient()
-    val database: MongoDatabase = mongoclient.getDatabase("bbc")
-    val collection: MongoCollection[Document] = database.getCollection[Document]("candidates")
 
     override def create(model: Candidate): UUID = {
       val future =collection.insertOne(Document(

@@ -1,14 +1,14 @@
 package com.bbc.countMeUp.dao.impl
 
-import java.util.UUID
-
-import com.bbc.countMeUp.model.{Candidate, Election, User, Vote}
-
-import scala.collection.mutable
+import org.mongodb.scala.{Document, MongoClient, MongoCollection, MongoDatabase}
 
 object DataStorage {
-  var candidates: collection.mutable.Map[UUID, Candidate] = new mutable.HashMap[UUID, Candidate]
-  var elections: collection.mutable.Map[UUID, Election] = new mutable.HashMap[UUID, Election]
-  var users: collection.mutable.Map[UUID, User] = new mutable.HashMap[UUID, User]
-  var votes: collection.mutable.Map[UUID, Vote] = new mutable.HashMap[UUID, Vote]
+
+  val mongoClient: MongoClient = MongoClient()
+  val database: MongoDatabase = mongoClient.getDatabase("bbc")
+  val collection: MongoCollection[Document] = database.getCollection[Document]("candidates")
+
+  def getCollection(collectionName: String): MongoCollection[Document] = {
+    database.getCollection[Document(collectionName)
+  }
 }
