@@ -8,6 +8,14 @@ import org.scalatest.{FunSpec, Matchers}
 
 import scala.util.Random
 
+
+/*
+ * Im going to leave this test in the github repo, normally I would have taken this out. and done performance
+ * testing elsewhere but I suppose I should show my work, by modifying the number in the for loop below that
+ * creates votes, I was able get numbers on how long it took to get election results with any number of random votes,
+ *
+ * Because my data store are behind a dao, this works with both the hash map and mongo data store.
+ */
 class perfTest extends FunSpec with Matchers{
 
   describe("testing"){
