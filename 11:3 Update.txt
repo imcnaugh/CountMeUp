@@ -1,0 +1,15 @@
+11:3 Update
+
+Today I updated every exception to be more meaningful, and also added scala docs on to everything of value. Also I branched off and started converting my dao's to use a mongo Database. This proved more difficult then I original expected due to bad libraries for scala to interact with Mongo, In the end I was able to transfer all functionally over. But at the cost of some slopping parsing code. Ill be honest, I have only ever used mongo with java projects, so this was new territory to me. I suppose I used this assessment as a bit of a learning experience. 
+
+Anyways, if you like more details, I decided to use the scala mongo driver. After doing some research I saw that mongo has 2 published lib's for interacting with there DB using scala, a newer driver, and an older lib called cahbah, I had red that cahbah was depreciated, and decided to use the driver. But as it turns out, the driver does a poor job parsing nested objects into models, So I had to hack my own parser by turning the results from mongo into json, and parsing data into models manually. Its not pretty, and I'm not proud, but it works. 
+
+Currently I am performance testing the domain with a mongo back end. Its taking significantly longer to populate 10 million votes, but my hope is mongo will have good indexing on its documents, and should provide a count quicker then a standard hash map. Ill update the average run times for mongo as I get them. 
+
+Average run times for hash map
+3.696 seconds
+3.282 seconds
+3.214 seconds
+3.177 seconds
+
+Tomorrow Ill be wrapping things up, I don't know how much I will be able to get done, but if I am able to create a small spring boot web layer with a swagger page for easy interaction with my domain, ill be happy. 
