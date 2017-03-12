@@ -15,7 +15,7 @@ import scala.concurrent.duration.Duration
 
 //TODO find a better way to parse out these objects coming back from mongo
 
-trait InMemoryElectionDao extends ElectionDao{
+trait MongoElectionDao extends ElectionDao{
   override def electionDao = new InMemElectionDao
 
   class InMemElectionDao extends ElectionDao {
