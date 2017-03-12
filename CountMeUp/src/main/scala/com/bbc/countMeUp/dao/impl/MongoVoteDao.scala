@@ -6,7 +6,6 @@ import com.bbc.countMeUp.dao.VoteDao
 import com.bbc.countMeUp.exception.{EntityAlreadyExistsException, EntityDoesNotExistException}
 import com.bbc.countMeUp.model.Vote
 
-import scala.collection.mutable
 import org.mongodb.scala._
 import org.mongodb.scala.model.Filters
 import org.mongodb.scala.result.DeleteResult
