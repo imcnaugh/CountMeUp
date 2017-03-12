@@ -13,14 +13,6 @@ trait VoteDao {
 
   trait VoteDao extends CrudDao[Vote] {
     /**
-      * Searches data store for all votes in an election
-      *
-      * @param electionId
-      * @return collection.mutable.Map[UUID, Vote]
-      */
-    def getVotesForElection(electionId: UUID): collection.mutable.Map[UUID, Vote]
-
-    /**
       * Gives a count of total votes in election
       *
       * @param electionId
