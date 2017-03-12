@@ -5,6 +5,12 @@ import java.util.UUID
 import com.bbc.countMeUp.dao.CandidateDao
 import com.bbc.countMeUp.exception.{EntityAlreadyExistsException, EntityDoesNotExistException}
 import com.bbc.countMeUp.model.Candidate
+import org.mongodb.scala._
+import org.mongodb.scala.model.Filters
+
+import scala.concurrent.Await
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
 
 trait InMemoryCandidateDao extends CandidateDao{
   override def candidateDao = new InMemCandidateDao
@@ -12,15 +18,36 @@ trait InMemoryCandidateDao extends CandidateDao{
   var candidates = DataStorage.candidates
 
   class InMemCandidateDao extends CandidateDao {
+
+    val mongoclient: MongoClient = MongoClient()
+    val database: MongoDatabase = mongoclient.getDatabase("bbc")
+    val collection: MongoCollection[Document] = database.getCollection[Document]("candidates")
+
     override def create(model: Candidate): UUID = {
-      candidates.put(model.id, model) match {
-        case None => model.id
-        case _ => throw new EntityAlreadyExistsException(model)
+      val future =collection.insertOne(Document(
+        "_id" -> model.id.toString,
+        "name" -> model.name
+      )).head()
+
+      try{
+        Await.result[Completed](future, Duration.Inf)
+        model.id
+      } catch {
+        case _: Exception => throw new EntityAlreadyExistsException(model)
       }
     }
 
     override def read(id: UUID): Option[Candidate] = {
-      candidates.get(id)
+      val future = collection.find(Filters.eq("_id", id.toString)).head() map { c =>
+        Option(Candidate(
+          id = UUID.fromString(c.getString("_id")),
+          name = c.getString("name")))}
+
+      try{
+        Await.result[Option[Candidate]](future, Duration.Inf)
+      } catch{
+        case _: IllegalStateException => None
+      }
     }
 
     override def update(model: Candidate): Candidate = {
