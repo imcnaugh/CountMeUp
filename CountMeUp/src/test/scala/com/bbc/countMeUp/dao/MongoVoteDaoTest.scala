@@ -2,18 +2,18 @@ package com.bbc.countMeUp.dao
 
 import java.util.UUID
 
-import com.bbc.countMeUp.dao.impl.InMemoryVoteDao
+import com.bbc.countMeUp.dao.impl.MongoVoteDao
 import com.bbc.countMeUp.exception.{EntityAlreadyExistsException, EntityDoesNotExistException}
 import com.bbc.countMeUp.model.Vote
 import org.scalatest.{FunSpec, Matchers}
 
-class InMemoryVoteDaoTest extends FunSpec with Matchers {
+class MongoVoteDaoTest extends FunSpec with Matchers {
 
   private class InMemoryVoteDaoTest {
-    this: InMemoryVoteDao =>
+    this: MongoVoteDao =>
   }
 
-  private val target = new InMemoryVoteDaoTest with InMemoryVoteDao
+  private val target = new InMemoryVoteDaoTest with MongoVoteDao
 
   // user, candidate, and election ID don't need to match up to anything just yet, If I implement a DB there will be
   // foreign key constraints keeping random values from being used.

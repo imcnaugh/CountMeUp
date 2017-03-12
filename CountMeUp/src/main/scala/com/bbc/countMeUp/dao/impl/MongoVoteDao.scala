@@ -15,7 +15,7 @@ import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 
-trait InMemoryVoteDao extends VoteDao {
+trait MongoVoteDao extends VoteDao {
   override def voteDao = new InMemVoteDao
 
   class InMemVoteDao extends VoteDao {
