@@ -7,6 +7,7 @@ import com.bbc.countMeUp.exception.{EntityAlreadyExistsException, EntityDoesNotE
 import com.bbc.countMeUp.model.Candidate
 import org.mongodb.scala._
 import org.mongodb.scala.model.Filters
+import org.mongodb.scala.result.DeleteResult
 
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -51,14 +52,26 @@ trait InMemoryCandidateDao extends CandidateDao{
     }
 
     override def update(model: Candidate): Candidate = {
-      candidates.put(model.id, model) match {
-        case None => throw new EntityDoesNotExistException(model.id)
-        case e: Some[Candidate] => e.get
+      val future = collection.findOneAndReplace(Filters.eq("_id", model.id.toString), Document(
+        "_id" -> model.id.toString,
+        "name" -> model.name
+      )).head() map {c =>
+        Candidate(
+          id = UUID.fromString(c.getString("_id")),
+          name = c.getString("name"))
       }
+
+      try{
+        Await.result[Candidate](future, Duration.Inf)
+      } catch {
+        case _: Exception => throw new EntityDoesNotExistException(model.id)
+      }
+
     }
 
     override def delete(id: UUID): Unit = {
-      candidates.remove(id)
+      val future = collection.deleteOne(Filters.eq("_id", id.toString)).head()
+      Await.result[DeleteResult](future, Duration.Inf)
     }
   }
 }
