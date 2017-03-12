@@ -151,24 +151,24 @@ class MongoVoteDaoTest extends FunSpec with Matchers {
       readVotes should equal(voteIds.size / 3)
     }
 
-    it("should be able to read ten million records in less then a second") {
-      val electionId = UUID.randomUUID()
-      val candidateId = UUID.randomUUID()
-      val voteIds = for (x <- 1 to 10000000) yield {
-        target.voteDao.create(testVote.copy(
-          id = UUID.randomUUID(),
-          electionId = electionId,
-          candidateId = candidateId
-        ))
-      }
-
-      val startTime = System.currentTimeMillis()
-      val readVotes = target.voteDao.getVoteCountForElectionAndCandidate(electionId, candidateId)
-      val endTime = System.currentTimeMillis()
-      val runtime = endTime - startTime
-
-      runtime should be < 1000L
-      readVotes should equal(voteIds.size)
-    }
+//    it("should be able to read ten million records in less then a second") {
+//      val electionId = UUID.randomUUID()
+//      val candidateId = UUID.randomUUID()
+//      val voteIds = for (x <- 1 to 10000000) yield {
+//        target.voteDao.create(testVote.copy(
+//          id = UUID.randomUUID(),
+//          electionId = electionId,
+//          candidateId = candidateId
+//        ))
+//      }
+//
+//      val startTime = System.currentTimeMillis()
+//      val readVotes = target.voteDao.getVoteCountForElectionAndCandidate(electionId, candidateId)
+//      val endTime = System.currentTimeMillis()
+//      val runtime = endTime - startTime
+//
+//      runtime should be < 1000L
+//      readVotes should equal(voteIds.size)
+//    }
   }
 }

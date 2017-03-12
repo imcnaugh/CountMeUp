@@ -44,7 +44,7 @@ class perfTest extends FunSpec with Matchers{
       var userVotes: Int = 0
       var currentUser = userDomain.addUser("user 0")
 
-      for(x <- 1 to 100){
+      for(x <- 1 to 10){
         if(userVotes >= maxVotesPerPerson){
           currentUser = userDomain.addUser("user " + x)
           userVotes = 0

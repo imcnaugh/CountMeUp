@@ -1,14 +1,14 @@
 package com.bbc.countMeUp.integrationTest
 
-import com.bbc.countMeUp.dao.impl.{InMemoryCandidateDao, InMemoryElectionDao, InMemoryUserDao, InMemoryVoteDao}
+import com.bbc.countMeUp.dao.impl._
 import com.bbc.countMeUp.domain.{CandidateDomain, ElectionDomain, UserDomain}
 import com.bbc.countMeUp.exception.ReachedElectionVoteLimitException
 import org.scalatest.{FunSpec, Matchers}
 
 class UserIntTest extends FunSpec with Matchers {
-  val userDomain = new UserDomain with InMemoryUserDao with InMemoryVoteDao with InMemoryElectionDao
-  val electionDomain = new ElectionDomain with InMemoryElectionDao with InMemoryVoteDao with  InMemoryCandidateDao
-  val candidateDomain = new CandidateDomain with InMemoryCandidateDao
+  val userDomain = new UserDomain with MongoUserDao with MongoVoteDao with MongoElectionDao
+  val candidateDomain = new CandidateDomain with MongoCandidateDao
+  val electionDomain = new ElectionDomain with MongoElectionDao with MongoVoteDao with  MongoCandidateDao
 
   describe("User round trip test"){
     it("I should be able to add a user, and read it back with no data loss"){

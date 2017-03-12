@@ -50,9 +50,9 @@ trait MongoElectionDao extends ElectionDao{
         val candidateStringArray = candidateString.split("\\},\\W+\\{")
 
         val candidates: Set[Candidate] = candidateStringArray.map(sa =>{
-          val args = sa.replace(" ", "")split(",")
-          val id = args(0).split(":")(1).substring(1, 37)
-          val name = args(1).split(":")(1).substring(1)
+          val args = sa.split(",")
+          val id = args(0).trim.split(":")(1).substring(2, 38)
+          val name = args(1).trim.split(":")(1).substring(2)
           Candidate(
             id = UUID.fromString(id),
             name = name.subSequence(0, name.size-1).toString
@@ -90,9 +90,9 @@ trait MongoElectionDao extends ElectionDao{
         val candidateStringArray = candidateString.split("\\},\\W+\\{")
 
         val candidates: Set[Candidate] = candidateStringArray.map(sa =>{
-          val args = sa.replace(" ", "")split(",")
-          val id = args(0).split(":")(1).substring(1, 37)
-          val name = args(1).split(":")(1).substring(1)
+          val args = sa.split(",")
+          val id = args(0).trim.split(":")(1).substring(2, 38)
+          val name = args(1).trim.split(":")(1).substring(2)
           Candidate(
             id = UUID.fromString(id),
             name = name.subSequence(0, name.size-1).toString
