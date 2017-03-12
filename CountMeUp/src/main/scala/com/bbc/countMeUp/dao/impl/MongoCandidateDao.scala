@@ -16,13 +16,12 @@ import scala.concurrent.duration.Duration
 trait MongoCandidateDao extends CandidateDao{
   override def candidateDao = new InMemCandidateDao
 
-  var candidates = DataStorage.candidates
-
   class InMemCandidateDao extends CandidateDao {
 
+    var collection = DataStorage.getCollection("candidates")
 
     override def create(model: Candidate): UUID = {
-      val future =collection.insertOne(Document(
+      val future = collection.insertOne(Document(
         "_id" -> model.id.toString,
         "name" -> model.name
       )).head()
