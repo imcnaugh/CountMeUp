@@ -2,18 +2,18 @@ package com.bbc.countMeUp.dao
 
 import java.util.UUID
 
-import com.bbc.countMeUp.dao.impl.InMemoryUserDao
+import com.bbc.countMeUp.dao.impl.MongoUserDao
 import com.bbc.countMeUp.exception.{EntityAlreadyExistsException, EntityDoesNotExistException}
 import com.bbc.countMeUp.model.User
 import org.scalatest.{FunSpec, Matchers}
 
-class InMemoryUserDaoTest extends FunSpec with Matchers {
+class MongoUserDaoTest extends FunSpec with Matchers {
 
   private class InMemoryUserDaoTest {
-    this: InMemoryUserDao =>
+    this: MongoUserDao =>
   }
 
-  private val target = new InMemoryUserDaoTest with InMemoryUserDao
+  private val target = new InMemoryUserDaoTest with MongoUserDao
 
   val testUser = User(
     id = UUID.randomUUID(),
