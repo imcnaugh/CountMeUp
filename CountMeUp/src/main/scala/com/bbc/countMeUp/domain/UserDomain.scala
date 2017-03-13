@@ -56,7 +56,7 @@ class UserDomain {
     if(userDao.read(userId) == None){
       throw new EntityDoesNotExistException(userId)
     }
-    //Election not found
+    //Check if user has reached election limit on votes
     if(election.maxVotesPerUser <= userVoteCountInElection){
       throw new ReachedElectionVoteLimitException
     }
