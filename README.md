@@ -17,7 +17,7 @@ If you want to test the mongo branch you will also have to set up a mongo instan
 To package, run `sbt clean compile test package`
 
 # Usage
-This will compile into a jar that exposes 3 domain, one for user, elections, and candidates.
+This will compile into a jar that exposes 3 domain methods, one for user, elections, and candidates.
 * The candidate domain allows you to create and read candidates.
 * The election domain will add elections, and get election results
 * The user domain creates and retrieves users, along with allows a user to vote in an election.
